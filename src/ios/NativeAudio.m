@@ -11,19 +11,19 @@
 
 @implementation NativeAudio
 
-NSString* ERROR_ASSETPATH_INCORRECT = @"(NATIVE AUDIO) Asset not found.";
-NSString* ERROR_REFERENCE_EXISTS = @"(NATIVE AUDIO) Asset reference already exists.";
-NSString* ERROR_REFERENCE_MISSING = @"(NATIVE AUDIO) Asset reference does not exist.";
-NSString* ERROR_TYPE_RESTRICTED = @"(NATIVE AUDIO) Action restricted to assets loaded using preloadComplex().";
-NSString* ERROR_VOLUME_NIL = @"(NATIVE AUDIO) Volume cannot be empty.";
-NSString* ERROR_VOLUME_FORMAT = @"(NATIVE AUDIO) Volume is declared as float between 0.0 - 1.0";
+NSString* ERROR_ASSETPATH_INCORRECT = @"(NATIVE AUDIO FIX) Asset not found.";
+NSString* ERROR_REFERENCE_EXISTS = @"(NATIVE AUDIO FIX) Asset reference already exists.";
+NSString* ERROR_REFERENCE_MISSING = @"(NATIVE AUDIO FIX) Asset reference does not exist.";
+NSString* ERROR_TYPE_RESTRICTED = @"(NATIVE AUDIO FIX) Action restricted to assets loaded using preloadComplex().";
+NSString* ERROR_VOLUME_NIL = @"(NATIVE AUDIO FIX) Volume cannot be empty.";
+NSString* ERROR_VOLUME_FORMAT = @"(NATIVE AUDIO FIX) Volume is declared as float between 0.0 - 1.0";
 
-NSString* INFO_ASSET_LOADED = @"(NATIVE AUDIO) Asset loaded.";
-NSString* INFO_ASSET_UNLOADED = @"(NATIVE AUDIO) Asset unloaded.";
-NSString* INFO_PLAYBACK_PLAY = @"(NATIVE AUDIO) Play";
-NSString* INFO_PLAYBACK_STOP = @"(NATIVE AUDIO) Stop";
-NSString* INFO_PLAYBACK_LOOP = @"(NATIVE AUDIO) Loop.";
-NSString* INFO_VOLUME_CHANGED = @"(NATIVE AUDIO) Volume changed.";
+NSString* INFO_ASSET_LOADED = @"(NATIVE AUDIO FIX) Asset loaded.";
+NSString* INFO_ASSET_UNLOADED = @"(NATIVE AUDIO FIX) Asset unloaded.";
+NSString* INFO_PLAYBACK_PLAY = @"(NATIVE AUDIO FIX) Play";
+NSString* INFO_PLAYBACK_STOP = @"(NATIVE AUDIO FIX) Stop";
+NSString* INFO_PLAYBACK_LOOP = @"(NATIVE AUDIO FIX) Loop.";
+NSString* INFO_VOLUME_CHANGED = @"(NATIVE AUDIO FIX) Volume changed.";
 
 - (void)pluginInitialize
 {
@@ -168,8 +168,7 @@ NSString* INFO_VOLUME_CHANGED = @"(NATIVE AUDIO) Volume changed.";
 
     [self.commandDelegate runInBackground:^{
         if (existingReference == nil) {
-            NSString* basePath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"www"];
-            NSString* path = [NSString stringWithFormat:@"%@/%@", basePath, assetPath];
+            NSString* path = [NSString stringWithFormat:@"%@", assetPath];
 
             if ([[NSFileManager defaultManager] fileExistsAtPath : path]) {
                 NativeAudioAsset* asset = [[NativeAudioAsset alloc] initWithPath:path
@@ -183,7 +182,7 @@ NSString* INFO_VOLUME_CHANGED = @"(NATIVE AUDIO) Volume changed.";
                 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: RESULT] callbackId:callbackId];
 
             } else {
-                NSString *RESULT = [NSString stringWithFormat:@"%@ (%@)", ERROR_ASSETPATH_INCORRECT, assetPath];
+                NSString *RESULT = [NSString stringWithFormat:@"%@ (%@)", ERROR_ASSETPATH_INCORRECT, path];
                 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: RESULT] callbackId:callbackId];
             }
         } else {
