@@ -19,7 +19,9 @@ static const CGFloat FADE_DELAY = 0.08;
     if(self) {
         voices = [[NSMutableArray alloc] init];  
         
-        NSURL *pathURL = [NSURL fileURLWithPath : path];
+        NSURL *pathURL = [NSURL string : path];
+
+        NSLog(pathURL);
         
         for (int x = 0; x < [numVoices intValue]; x++) {
             AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithContentsOfURL:pathURL error: NULL];
