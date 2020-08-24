@@ -170,7 +170,8 @@ NSString* INFO_VOLUME_CHANGED = @"(NATIVE AUDIO FIX) Volume changed.";
         if (existingReference == nil) {
             NSString* path = [NSString stringWithFormat:@"%@", assetPath];
 
-            if ([[NSFileManager defaultManager] fileExistsAtPath : path]) {
+            //if ([[NSFileManager defaultManager] fileExistsAtPath : path]) {
+            @try {
                 NativeAudioAsset* asset = [[NativeAudioAsset alloc] initWithPath:path
                                                                       withVoices:voices
                                                                       withVolume:volume
@@ -181,8 +182,14 @@ NSString* INFO_VOLUME_CHANGED = @"(NATIVE AUDIO FIX) Volume changed.";
                 NSString *RESULT = [NSString stringWithFormat:@"%@ (%@)", INFO_ASSET_LOADED, audioID];
                 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString: RESULT] callbackId:callbackId];
 
-            } else {
+            /*} else {
                 NSString *RESULT = [NSString stringWithFormat:@"%@ (%@)", ERROR_ASSETPATH_INCORRECT, path];
+                [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: RESULT] callbackId:callbackId];
+            }*/
+            }
+            @catch (NSException *exception) {
+                NSLog(@"%@", exception.reason);
+                NSString *RESULT = [NSString stringWithFormat:@"%@ (%@)", ERROR_ASSETPATH_INCORRECT, exception.reason];
                 [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: RESULT] callbackId:callbackId];
             }
         } else {
